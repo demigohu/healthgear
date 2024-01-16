@@ -1,19 +1,11 @@
-import Image from 'next/image'
-import Submit from "../components/Submit"
-import Access from '@/components/access'
-import Service from '@/components/service'
-import Mint from '@/components/mint'
-import HealthServices from '@/components/HealthService'
+"use client"
 
+import HealthServices from "@/components/HealthService"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="max-w-[1200px] mx-auto mt-20 px-10 pb-20">
       <HealthServices />
-      <Mint />
-      <Access />
-      <Service />
-      <Submit />
     </main>
   )
 }
