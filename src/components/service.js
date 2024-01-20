@@ -16,16 +16,18 @@ const Service = () => {
   useEffect(() => {
     const initializeContract = async () => {
       try {
-        const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const MedicalRecordsContract = new ethers.Contract(
-          contractAddress,
-          contractABI.abi,
-          signer
-        );
-
-        setMedicalRecordsContract(MedicalRecordsContract);
+        if (typeof window !== "undefined") {
+          const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const MedicalRecordsContract = new ethers.Contract(
+            contractAddress,
+            contractABI.abi,
+            signer
+          );
+  
+          setMedicalRecordsContract(MedicalRecordsContract);
+        }
       } catch (error) {
         console.error("Error initializing contract:", error);
       }
