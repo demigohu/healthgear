@@ -1,38 +1,55 @@
 "use client"
-import { useEffect, useState } from "react"
-import { ethers } from "ethers"
-import contractABI from "../contracts/MedicalRecords.json"
-
-// Gantilah dengan alamat kontrak yang sesuai
-const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082"
-
-const provider = new ethers.providers.Web3Provider(window.ethereum)
-const signer = provider.getSigner()
-const MedicalRecordsContract = new ethers.Contract(
-  contractAddress,
-  contractABI.abi,
-  signer
-)
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import contractABI from "../contracts/MedicalRecords.json";
 
 const Access = () => {
-  const [providerAddress, setProviderAddress] = useState("")
+  const [providerAddress, setProviderAddress] = useState("");
+  const [medicalRecordsContract, setMedicalRecordsContract] = useState(null);
+
+  useEffect(() => {
+    const initializeContract = async () => {
+      try {
+        if (typeof window !== "undefined" && window.ethereum) {
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
+          const signer = provider.getSigner();
+          const medicalRecordsContract = new ethers.Contract(
+            contractAddress,
+            contractABI.abi,
+            signer
+          );
+          setMedicalRecordsContract(medicalRecordsContract);
+        }
+      } catch (error) {
+        console.error("Error initializing contract:", error);
+      }
+    };
+
+    initializeContract();
+  }, []); // empty dependency array ensures this effect runs only once on mount
 
   const handleGrantAccess = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      // Validasi apakah alamat layanan kesehatan diisi
+      if (!medicalRecordsContract) {
+        console.error("Medical Records contract not initialized");
+        return;
+      }
+
       if (!providerAddress) {
-        console.error("Please enter the healthcare service address")
-        return
+        console.error("Please enter the healthcare service address");
+        return;
       }
 
       // Memanggil fungsi grantAccess pada smart contract
-      await MedicalRecordsContract.grantAccess(providerAddress)
-      console.log("Access granted to:", providerAddress)
+      await medicalRecordsContract.grantAccess(providerAddress);
+      console.log("Access granted to:", providerAddress);
     } catch (error) {
-      console.error("Error granting access:", error)
+      console.error("Error granting access:", error);
     }
-  }
+  };
 
   return (
     <>

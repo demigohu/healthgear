@@ -19,8 +19,8 @@ export default function Submit() {
   useEffect(() => {
     const initializeContract = async () => {
       try {
-        if (typeof window !== "undefined" && window.ethereum) {
-          await window.ethereum.request({ method: "eth_requestAccounts" });
+        if (typeof window !== "undefined") {
+          // await window.ethereum.request({ method: "eth_requestAccounts" });
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
           const signer = provider.getSigner();
