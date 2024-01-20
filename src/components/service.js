@@ -5,7 +5,7 @@ import { ethers } from "ethers"
 import contractABI from "../contracts/MedicalRecords.json"
 
 // Ganti dengan alamat kontrak yang sesuai
-const contractAddress = "0xE45cCB5e4f1C5ef368d8BFC387D57605b698B1D2"
+const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082"
 
 const provider = new ethers.providers.Web3Provider(window.ethereum)
 const signer = provider.getSigner()
@@ -48,10 +48,10 @@ const Service = () => {
   return (
     <>
       <div className="w-1/2 mx-auto card card-base-100 border p-5 shadow-xl">
-        <h1 className="text-xl font-bold text-white">Layanan Kesehatan</h1>
-        <form className="mt-5 flex flex-col gap-5">
+        <h1 className="text-xl font-bold text-white">Health Service</h1>
+        <form className="mt-5 flex flex-col gap-5 text-white">
           <div>
-            <label>Masukkan Alamat Layanan Kesehatan:</label>
+            <label>Put Your Health Service Address:</label>
             <input
               type="text"
               placeholder="Type here"
@@ -64,13 +64,13 @@ const Service = () => {
             className="btn bg-[#3369bf] hover:bg-[#2a4e87] border-none text-white"
             onClick={handleFetchAuthorizedPatients}
           >
-            Lihat yang Telah Memberikan Izin
+            Granted Access
           </button>
         </form>
       </div>
       <div className="card card-base-100 border p-5 shadow-xl mx-auto my-20">
-        <div className="flex flex-col item gap-2">
-          <label>Pilih Pasien yang Akan Ditampilkan Rekam Medisnya:</label>
+        <div className="flex flex-col item gap-2 text-white">
+          <label>Select the patient whose medical record will be displayed:</label>
           <div className="flex gap-5">
             <select
               className="select select-bordered w-full max-w-xs"
@@ -90,29 +90,29 @@ const Service = () => {
               onClick={handleFetchMedicalRecords}
               className="btn bg-[#3369bf] hover:bg-[#2a4e87] border-none text-white"
             >
-              Ambil Rekam Medis
+              Get Medical Record
             </button>
           </div>
         </div>
         <div className="border shadow-sm rounded-md p-5 mt-5">
           <h2 className="mb-5 font-semibold text-lg text-center text-white">
-            Rekam Medis
+            Medical Records
           </h2>
           <div className="overflow-x-auto w-full mx-auto">
             <table className="table border-b-2 ">
               {/* head */}
               <thead>
                 <tr className=" text-white text-center">
-                  <th>Nama</th>
-                  <th>Jenis Kelamin</th>
-                  <th>Tanggal Lahir</th>
-                  <th>Nomor Telepon</th>
-                  <th>Alamat 1</th>
-                  <th>Alamat 2</th>
-                  <th>Kota</th>
-                  <th>Provinsi</th>
-                  <th>Kode Pos</th>
-                  <th>Status Akses</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Birth Date</th>
+                  <th>Home Phone</th>
+                  <th>Address 1</th>
+                  <th>Address 2</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
+                  <th>Access Status</th>
                   <th>Diagnosis</th>
                 </tr>
               </thead>

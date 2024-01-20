@@ -10,7 +10,8 @@ const Mint = ({ account }) => {
   const [balanceAddress, setBalanceAddress] = useState("")
   const [balance, setBalance] = useState("")
 
-  const handleMint = async () => {
+  const handleMint = async (e) => {
+    e.preventDefault()
     try {
       if (!mintToAddress) {
         console.error("Please enter the destination address")
@@ -34,7 +35,8 @@ const Mint = ({ account }) => {
     }
   }
 
-  const handleCheckBalance = async () => {
+  const handleCheckBalance = async (e) => {
+    e.preventDefault()
     try {
       if (!balanceAddress) {
         console.error("Please enter the address to check balance")

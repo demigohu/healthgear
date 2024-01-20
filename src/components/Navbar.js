@@ -90,7 +90,7 @@ function Navbar() {
               className="w-full h-full"
             />
           </div>
-          <p className="text-xl font-bold text-white">OVRS</p>
+          <p className="text-xl font-bold text-white">Health Gear</p>
         </div>
         <div className="flex gap-10 font-semibold text-[#f0f0f0] ">
           <Link href={"/"} className="hover:text-[#333333]">

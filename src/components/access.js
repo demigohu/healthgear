@@ -4,7 +4,7 @@ import { ethers } from "ethers"
 import contractABI from "../contracts/MedicalRecords.json"
 
 // Gantilah dengan alamat kontrak yang sesuai
-const contractAddress = "0xE45cCB5e4f1C5ef368d8BFC387D57605b698B1D2"
+const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082"
 
 const provider = new ethers.providers.Web3Provider(window.ethereum)
 const signer = provider.getSigner()
@@ -17,7 +17,8 @@ const MedicalRecordsContract = new ethers.Contract(
 const Access = () => {
   const [providerAddress, setProviderAddress] = useState("")
 
-  const handleGrantAccess = async () => {
+  const handleGrantAccess = async (e) => {
+    e.preventDefault()
     try {
       // Validasi apakah alamat layanan kesehatan diisi
       if (!providerAddress) {
@@ -37,9 +38,9 @@ const Access = () => {
     <>
       <div className="card card-base-100 border p-5 shadow-xl">
         <h1 className="text-xl font-bold text-white">Grant Access</h1>
-        <form className="mt-5 flex flex-col gap-5">
+        <form className="mt-5 flex flex-col gap-5 text-white">
           <div className="">
-            <label>Address to Check Balance:</label>
+            <label>Give Access to Health Service Address</label>
             <input
               type="text"
               placeholder="Type here"

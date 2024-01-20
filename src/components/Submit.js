@@ -17,14 +17,15 @@ export default function Submit() {
   const [zipcode, setZipcode] = useState("")
   const [diagnosis, setDiagnosis] = useState("")
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
       if (window.ethereum) {
         await window.ethereum.request({ method: "eth_requestAccounts" })
         const provider = new ethers.providers.Web3Provider(window.ethereum)
 
         // Mengambil alamat kontrak dan provider Ethereum
-        const contractAddress = "0xE45cCB5e4f1C5ef368d8BFC387D57605b698B1D2" // Ganti dengan alamat kontrak Anda
+        const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082" // Ganti dengan alamat kontrak Anda
 
         const signer = provider.getSigner()
 
@@ -66,7 +67,7 @@ export default function Submit() {
     <>
       <div className="card card-base-100 border p-5 shadow-xl">
         <h1 className="text-xl font-bold text-white">Submit Medical Record</h1>
-        <form className="mt-5 flex flex-col gap-5">
+        <form className="mt-5 flex flex-col gap-5 text-white">
           <div className="">
             <label>Name:</label>
             <input
