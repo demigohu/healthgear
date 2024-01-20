@@ -4,57 +4,41 @@ import React, { useEffect, useState } from "react"
 import { ethers } from "ethers"
 import contractABI from "../contracts/MedicalRecords.json"
 
-// Ganti dengan alamat kontrak yang sesuai
-const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082"
 
-// const provider = new ethers.providers.Web3Provider()
-// const signer = provider.getSigner()
-// const MedicalRecordsContract = new ethers.Contract(
-//   contractAddress,
-//   contractABI.abi,
-//   signer
-// )
 
 const Service = () => {
   const [providerAddress, setProviderAddress] = useState("");
   const [authorizedPatients, setAuthorizedPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [medicalRecords, setMedicalRecords] = useState([]);
-  let MedicalRecordsContract;
+  const [medicalRecordsContract, setMedicalRecordsContract] = useState(null);
 
-  // Inisialisasi Web3 hanya dilakukan ketika komponen pertama kali dirender di sisi klien
-  if (typeof window !== "undefined" && window.ethereum) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    MedicalRecordsContract = new ethers.Contract(
-      contractAddress,
-      contractABI.abi,
-      signer
-    );
-
-    // Setelah menginisialisasi, Anda bisa menggunakan MedicalRecordsContract
-    // dan melakukan operasi yang Anda butuhkan di sini.
-
-    // Contoh: Fetch authorized patients pada saat inisialisasi
-    (async () => {
+  useEffect(() => {
+    const initializeContract = async () => {
       try {
-        const authorizedPatientsList =
-          await MedicalRecordsContract.getAuthorizedPatients(providerAddress);
-        setAuthorizedPatients(authorizedPatientsList);
+        const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const MedicalRecordsContract = new ethers.Contract(
+          contractAddress,
+          contractABI.abi,
+          signer
+        );
+
+        setMedicalRecordsContract(MedicalRecordsContract);
       } catch (error) {
-        console.error("Error fetching authorized patients:", error);
+        console.error("Error initializing contract:", error);
       }
-    })();
-  } else {
-    console.error("Web3 not initialized");
-  }
+    };
+
+    initializeContract();
+  }, []);
 
   const handleFetchAuthorizedPatients = async (e) => {
     e.preventDefault();
     try {
-      if (MedicalRecordsContract) {
-        const authorizedPatientsList =
-          await MedicalRecordsContract.getAuthorizedPatients(providerAddress);
+      if (medicalRecordsContract) {
+        const authorizedPatientsList = await medicalRecordsContract.getAuthorizedPatients(providerAddress);
         setAuthorizedPatients(authorizedPatientsList);
       }
     } catch (error) {
@@ -64,9 +48,8 @@ const Service = () => {
 
   const handleFetchMedicalRecords = async () => {
     try {
-      if (selectedPatient && MedicalRecordsContract) {
-        const medicalRecordsData =
-          await MedicalRecordsContract.getMedicalRecord(selectedPatient);
+      if (selectedPatient && medicalRecordsContract) {
+        const medicalRecordsData = await medicalRecordsContract.getMedicalRecord(selectedPatient);
         setMedicalRecords([medicalRecordsData]);
       }
     } catch (error) {

@@ -1,67 +1,70 @@
 "use client"
-import { useState } from "react"
-import { ethers } from "ethers"
-
-// Import ABI dan alamat kontrak smart contract
-import MedicalRecordsABI from "../contracts/MedicalRecords.json"
+import { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import MedicalRecordsABI from "../contracts/MedicalRecords.json";
 
 export default function Submit() {
-  const [name, setName] = useState("")
-  const [gender, setGender] = useState("")
-  const [birthDate, setBirthDate] = useState("")
-  const [homePhone, setHomePhone] = useState("")
-  const [addr1, setAddr1] = useState("")
-  const [addr2, setAddr2] = useState("")
-  const [city, setCity] = useState("")
-  const [state, setState] = useState("")
-  const [zipcode, setZipcode] = useState("")
-  const [diagnosis, setDiagnosis] = useState("")
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [homePhone, setHomePhone] = useState("");
+  const [addr1, setAddr1] = useState("");
+  const [addr2, setAddr2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [diagnosis, setDiagnosis] = useState("");
+  const [medicalRecordsContract, setMedicalRecordsContract] = useState(null);
+
+  useEffect(() => {
+    const initializeContract = async () => {
+      try {
+        if (window.ethereum) {
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082";
+          const signer = provider.getSigner();
+          const medicalRecordsContract = new ethers.Contract(
+            contractAddress,
+            MedicalRecordsABI.abi,
+            signer
+          );
+          setMedicalRecordsContract(medicalRecordsContract);
+        }
+      } catch (error) {
+        console.error("Error initializing contract:", error);
+      }
+    };
+
+    initializeContract();
+  }, []); // empty dependency array ensures this effect runs only once on mount
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      if (window.ethereum) {
-        await window.ethereum.request({ method: "eth_requestAccounts" })
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-
-        // Mengambil alamat kontrak dan provider Ethereum
-        const contractAddress = "0x0D8e19cA7EbD3cE9b6fab9cF317a9e75e0D66082" // Ganti dengan alamat kontrak Anda
-
-        const signer = provider.getSigner()
-
-        // Membuat instance kontrak MedicalRecords
-        const medicalRecordsContract = new ethers.Contract(
-          contractAddress,
-          MedicalRecordsABI.abi,
-          signer
-        )
-
-        // Menjalankan fungsi addOrUpdateMedicalRecord
-        const transaction =
-          await medicalRecordsContract.addOrUpdateMedicalRecord(
-            name,
-            gender,
-            birthDate,
-            homePhone,
-            addr1,
-            addr2,
-            city,
-            state,
-            zipcode,
-            [diagnosis]
-          )
-
-        // Menunggu konfirmasi transaksi
-        await transaction.wait()
+      if (medicalRecordsContract) {
+        const transaction = await medicalRecordsContract.addOrUpdateMedicalRecord(
+          name,
+          gender,
+          birthDate,
+          homePhone,
+          addr1,
+          addr2,
+          city,
+          state,
+          zipcode,
+          [diagnosis]
+        );
+        await transaction.wait();
+        alert("Medical Record submitted successfully!");
       }
-      alert("Medical Record submitted successfully!")
     } catch (error) {
-      console.error("Error submitting medical record:", error)
+      console.error("Error submitting medical record:", error);
       alert(
         "Failed to submit medical record. Please check the console for details."
-      )
+      );
     }
-  }
+  };
 
   return (
     <>
