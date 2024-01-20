@@ -22,32 +22,32 @@ const Service = () => {
   const [medicalRecords, setMedicalRecords] = useState([]);
   let MedicalRecordsContract;
 
-  (async () => {
-    try {
-      // Periksa apakah window.ethereum telah diinisialisasi
-      if (typeof window !== "undefined" && window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        MedicalRecordsContract = new ethers.Contract(
-          contractAddress,
-          contractABI.abi,
-          signer
-        );
+  // Inisialisasi Web3 hanya dilakukan ketika komponen pertama kali dirender di sisi klien
+  if (typeof window !== "undefined" && window.ethereum) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    MedicalRecordsContract = new ethers.Contract(
+      contractAddress,
+      contractABI.abi,
+      signer
+    );
 
-        // Setelah menginisialisasi, Anda bisa menggunakan MedicalRecordsContract
-        // dan melakukan operasi yang Anda butuhkan di sini.
+    // Setelah menginisialisasi, Anda bisa menggunakan MedicalRecordsContract
+    // dan melakukan operasi yang Anda butuhkan di sini.
 
-        // Contoh: Fetch authorized patients pada saat inisialisasi
+    // Contoh: Fetch authorized patients pada saat inisialisasi
+    (async () => {
+      try {
         const authorizedPatientsList =
           await MedicalRecordsContract.getAuthorizedPatients(providerAddress);
         setAuthorizedPatients(authorizedPatientsList);
-      } else {
-        console.error("Web3 not initialized");
+      } catch (error) {
+        console.error("Error fetching authorized patients:", error);
       }
-    } catch (error) {
-      console.error("Error initializing Web3:", error);
-    }
-  })();
+    })();
+  } else {
+    console.error("Web3 not initialized");
+  }
 
   const handleFetchAuthorizedPatients = async (e) => {
     e.preventDefault();
