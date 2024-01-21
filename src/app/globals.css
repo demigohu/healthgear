@@ -5,3 +5,8 @@
 body {
   background: radial-gradient(circle, #65379b 0%, #886aea 53%, #6457c6 100%);
 }
+
+input {
+  background-color: white !important;
+  color: black !important;
+}

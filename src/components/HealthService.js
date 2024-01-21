@@ -67,14 +67,14 @@ const HealthService = () => {
       <h1 className="text-3xl text-center mb-16 text-white font-bold">
         List Health Service
       </h1>
-      <div className="grid grid-cols-3 gap-10 text-black">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-black">
         {HealthServices.map((service) => (
-          <div key={service.id} className="card bg-[#f0f0f0] shadow-xl overflow-hidden">
+          <div
+            key={service.id}
+            className="card bg-[#f0f0f0] shadow-xl overflow-hidden"
+          >
             <figure>
-              <Image
-                src={Hospital}
-                alt="Shoes"
-              />
+              <Image src={Hospital} alt="Shoes" />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{service.name}</h2>
@@ -82,7 +82,11 @@ const HealthService = () => {
               <p>
                 {/* Address Layanan Kesehatan (bisa di copy): */}
                 <span
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    wordWrap: "break-word",
+                  }}
                   onClick={() => handleCopyAddress(service.addresss)}
                 >
                   {copiedAddress === service.addresss

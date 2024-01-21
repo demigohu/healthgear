@@ -5,12 +5,14 @@ import { ethers } from "ethers"
 import Link from "next/link"
 import Image from "next/image"
 import Logo from "@/../public/logo.jpg"
+import { Divide as Hamburger } from "hamburger-react"
 
 function Navbar() {
   const [walletInfoVisible, setWalletInfoVisible] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
   const [balance, setBalance] = useState("")
   const [change, setChange] = useState(false)
+  const [isOpen, setOpen] = useState(false)
 
   const connectWallet = async () => {
     try {
@@ -78,7 +80,7 @@ function Navbar() {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto px-10 relative">
+    <div className="max-w-[1200px] mx-auto px-5 md:px-10 relative">
       <div className="flex justify-between items-center py-5 ">
         <div className="flex items-center gap-2">
           <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
@@ -92,7 +94,7 @@ function Navbar() {
           </div>
           <p className="text-xl font-bold text-white">Health Gear</p>
         </div>
-        <div className="flex gap-10 font-semibold text-[#f0f0f0] ">
+        <div className="hidden lg:flex gap-10 font-semibold text-[#f0f0f0] ">
           <Link href={"/"} className="hover:text-[#333333]">
             Home
           </Link>
@@ -106,7 +108,7 @@ function Navbar() {
             Service
           </Link>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {walletInfoVisible ? (
             <div>
               <div className="flex gap-5">
@@ -139,6 +141,88 @@ function Navbar() {
             >
               Connect Wallet
             </button>
+          )}
+        </div>
+        <div className="lg:hidden">
+          <Hamburger color="white" toggled={isOpen} toggle={setOpen} />
+          {isOpen ? (
+            <div className="flex flex-col items-center gap-10 font-semibold absolute right-0 bg-[#6457c6] w-full z-50 py-10 top-full transition-all text-white">
+              <Link
+                href={"/"}
+                className="text-white hover:text-[#333333]"
+                onClick={() => setOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href={"mint"}
+                className="text-white hover:text-[#333333]"
+                onClick={() => setOpen(false)}
+              >
+                Mint
+              </Link>
+              <Link
+                href={"submit"}
+                className="text-white hover:text-[#333333]"
+                onClick={() => setOpen(false)}
+              >
+                Submit & Access
+              </Link>
+              <Link
+                href={"service"}
+                className="text-white hover:text-[#333333]"
+                onClick={() => setOpen(false)}
+              >
+                Service
+              </Link>
+              <div className="lg:flex items-center gap-8">
+                {walletInfoVisible ? (
+                  <div>
+                    <div className="flex gap-5">
+                      <button className="btn bg-transparent text-black hover:bg-transparent ">
+                        {balance}
+                      </button>
+                      <div
+                        className="border text-white shadow-md px-2 rounded-lg cursor-pointer flex items-center gap-2 max-w-40 overflow-hidden"
+                        onClick={handleChange}
+                      >
+                        <div className="w-10 h-10 rounded-full overflow-hidden">
+                          <Image
+                            src={a}
+                            alt=""
+                            width={100}
+                            height={100}
+                            className="w-full h-full"
+                          />
+                        </div>
+                        <p className="max-w-20 text-xs text-black font-semibold overflow-hidden">
+                          {walletAddress}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    className="btn btn-neutral text-white border-none"
+                    onClick={connectWallet}
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-10 font-semibold absolute right-0 bg-[#6457c6] w-full z-50 py-10 -top-[500px] transition-all">
+              <Link href={"/"}>Home</Link>
+              <Link href={"deploy"}>Deploy</Link>
+              <Link href={"mint"}>Mint</Link>
+              <Link href={"faucet"}>Faucet</Link>
+              <Link
+                href={"https://portal.dymension.xyz/rollapp/overgear_1229724-1"}
+              >
+                RollApp
+              </Link>
+            </div>
           )}
         </div>
         {change ? (

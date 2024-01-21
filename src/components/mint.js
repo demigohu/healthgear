@@ -60,8 +60,8 @@ const Mint = ({ account }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-10 py-10 px-20">
-        <div className="card card-base-100 border p-5 shadow-xl">
+      <div className="grid lg:grid-cols-2 gap-10 px-5 md:px-20">
+        <div className="card card-base-100 border p-5 md:p-10 shadow-xl">
           <h1 className="text-xl font-bold text-white">Mint Tokens</h1>
           <form className="mt-5 flex flex-col gap-5">
             <div className="">
